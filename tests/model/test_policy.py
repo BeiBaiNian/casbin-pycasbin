@@ -29,6 +29,31 @@ class TestPolicy(TestCase):
 
         self.assertTrue(m.get_policy("p", "p") == [rule])
 
+    def test_get_policy_returns_copies(self):
+        m = Model()
+        m.load_model(get_examples("basic_model.conf"))
+
+        rule = ["admin", "domain1", "data1", "read"]
+        m.add_policy("p", "p", rule)
+
+        returned = m.get_policy("p", "p")
+        returned.append(["hacker", "domain1", "data1", "read"])
+        returned[0][0] = "hacker"
+
+        self.assertEqual(m.get_policy("p", "p"), [["admin", "domain1", "data1", "read"]])
+
+    def test_get_filtered_policy_returns_copies(self):
+        m = Model()
+        m.load_model(get_examples("basic_model.conf"))
+
+        rule = ["admin", "domain1", "data1", "read"]
+        m.add_policy("p", "p", rule)
+
+        returned = m.get_filtered_policy("p", "p", 0, "admin")
+        returned[0][0] = "hacker"
+
+        self.assertEqual(m.get_policy("p", "p"), [["admin", "domain1", "data1", "read"]])
+
     def test_has_policy(self):
         m = Model()
         m.load_model(get_examples("basic_model.conf"))

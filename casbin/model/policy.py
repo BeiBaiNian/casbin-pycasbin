@@ -89,14 +89,22 @@ class Policy:
                 self[sec][key].policy = []
 
     def get_policy(self, sec, ptype):
-        """gets all rules in a policy."""
+        """gets all rules in a policy.
 
-        return self[sec][ptype].policy
+        The returned rules are shallow copies, so that mutating them does not
+        corrupt the internal policy storage.
+        """
+
+        return [rule[:] for rule in self[sec][ptype].policy]
 
     def get_filtered_policy(self, sec, ptype, field_index, *field_values):
-        """gets rules based on field filters from a policy."""
+        """gets rules based on field filters from a policy.
+
+        The returned rules are shallow copies, so that mutating them does not
+        corrupt the internal policy storage.
+        """
         return [
-            rule
+            rule[:]
             for rule in self[sec][ptype].policy
             if all(
                 (callable(value) and value(rule[field_index + i])) or (value == "" or rule[field_index + i] == value)

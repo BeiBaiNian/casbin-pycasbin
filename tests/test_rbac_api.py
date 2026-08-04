@@ -206,6 +206,29 @@ class TestRbacApi(TestCaseBase):
             sorted([["bob", "data2", "write"]]),
         )
 
+    def test_implicit_permissions_api_does_not_expose_internal_rules(self):
+        e = self.get_enforcer(
+            get_examples("rbac_model.conf"),
+            get_examples("rbac_policy.csv"),
+        )
+
+        permissions = e.get_implicit_permissions_for_user("alice")
+        for permission in permissions:
+            permission[0] = "alice"
+
+        self.assertEqual(
+            sorted(e.get_policy()),
+            sorted(
+                [
+                    ["alice", "data1", "read"],
+                    ["bob", "data2", "write"],
+                    ["data2_admin", "data2", "read"],
+                    ["data2_admin", "data2", "write"],
+                ]
+            ),
+        )
+        self.assertTrue(e.enforce("alice", "data2", "read"))
+
     def test_enforce_implicit_permissions_api_with_multiple_policy(self):
         e = self.get_enforcer(
             get_examples("rbac_with_multiple_policy_model.conf"),
