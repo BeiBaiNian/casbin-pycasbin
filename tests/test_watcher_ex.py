@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import casbin
-from tests.test_enforcer import get_examples, TestCaseBase
+from tests.test_enforcer import get_examples, get_examples_copy, TestCaseBase
 from unittest import IsolatedAsyncioTestCase
 
 
@@ -221,7 +221,7 @@ class TestWatcherEx(TestCaseBase):
     def test_auto_notify_enabled(self):
         e = self.get_enforcer(
             get_examples("basic_model.conf"),
-            get_examples("basic_policy.csv"),
+            get_examples_copy("basic_policy.csv"),
         )
         w = SampleWatcher()
         e.set_watcher(w)
@@ -254,7 +254,7 @@ class TestWatcherEx(TestCaseBase):
     def test_auto_notify_disabled(self):
         e = self.get_enforcer(
             get_examples("basic_model.conf"),
-            get_examples("basic_policy.csv"),
+            get_examples_copy("basic_policy.csv"),
         )
         w = SampleWatcher()
         e.set_watcher(w)
@@ -315,7 +315,7 @@ class TestAsyncWatcherEx(IsolatedAsyncioTestCase):
     async def test_auto_notify_enabled(self):
         e = self.get_enforcer(
             get_examples("basic_model.conf"),
-            get_examples("basic_policy.csv"),
+            get_examples_copy("basic_policy.csv"),
         )
         await e.load_policy()
 
@@ -350,7 +350,7 @@ class TestAsyncWatcherEx(IsolatedAsyncioTestCase):
     async def test_auto_notify_disabled(self):
         e = self.get_enforcer(
             get_examples("basic_model.conf"),
-            get_examples("basic_policy.csv"),
+            get_examples_copy("basic_policy.csv"),
         )
         await e.load_policy()
 
@@ -388,7 +388,7 @@ class TestAsyncWatcherEx(IsolatedAsyncioTestCase):
         """Test that a watcher with only async update() method works properly."""
         e = self.get_enforcer(
             get_examples("basic_model.conf"),
-            get_examples("basic_policy.csv"),
+            get_examples_copy("basic_policy.csv"),
         )
         await e.load_policy()
 

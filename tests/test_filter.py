@@ -15,7 +15,7 @@
 import os
 from unittest import TestCase
 import casbin
-from tests.test_enforcer import get_examples
+from tests.test_enforcer import get_examples, get_examples_copy
 from casbin.persist.adapters import FilteredFileAdapter
 from casbin.persist.adapters.filtered_file_adapter import filter_line, filter_words
 
@@ -103,7 +103,7 @@ class TestFilteredFileAdapter(TestCase):
             e.load_filtered_policy(filter)
 
     def test_filtered_policy_empty_filter(self):
-        adapter = FilteredFileAdapter(get_examples("rbac_with_domains_policy.csv"))
+        adapter = FilteredFileAdapter(get_examples_copy("rbac_with_domains_policy.csv"))
         e = casbin.Enforcer(get_examples("rbac_with_domains_model.conf"), adapter)
 
         try:
@@ -211,7 +211,7 @@ class TestFilteredFileAdapter(TestCase):
 
     def test_empty_string_filter(self):
         """Test the filter for all empty strings."""
-        adapter = FilteredFileAdapter(get_examples("rbac_with_domains_policy.csv"))
+        adapter = FilteredFileAdapter(get_examples_copy("rbac_with_domains_policy.csv"))
         e = casbin.Enforcer(get_examples("rbac_with_domains_model.conf"), adapter)
         filter = Filter()
         filter.P = ["", "", ""]

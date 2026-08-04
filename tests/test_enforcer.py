@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import atexit
 import copy
 import os
+import shutil
+import tempfile
 import time
+from itertools import count
 from unittest import TestCase, IsolatedAsyncioTestCase
 
 import casbin
@@ -24,6 +28,23 @@ from casbin import util
 def get_examples(path):
     examples_path = os.path.split(os.path.realpath(__file__))[0] + "/../examples/"
     return os.path.abspath(examples_path + path)
+
+
+_scratch_dir = tempfile.mkdtemp(prefix="pycasbin-tests-")
+atexit.register(shutil.rmtree, _scratch_dir, ignore_errors=True)
+_scratch_counter = count()
+
+
+def get_examples_copy(path):
+    """Returns the path of a throwaway copy of an example file.
+
+    Tests that call save_policy() must use this instead of get_examples(), so that
+    they do not rewrite the checked-in examples (which, on Windows, also flips their
+    line endings to CRLF and leaves the working tree dirty).
+    """
+    destination = os.path.join(_scratch_dir, "{}-{}".format(next(_scratch_counter), os.path.basename(path)))
+    shutil.copyfile(get_examples(path), destination)
+    return destination
 
 
 class MockSub:
