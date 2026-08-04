@@ -36,7 +36,6 @@ class AtomicBool:
 
 
 class SyncedEnforcer:
-
     """SyncedEnforcer wraps Enforcer and provides synchronized access.
     It's also a drop-in replacement for Enforcer"""
 
