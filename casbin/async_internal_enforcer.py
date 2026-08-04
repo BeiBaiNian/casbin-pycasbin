@@ -62,8 +62,13 @@ class AsyncInternalEnforcer(CoreEnforcer):
                 need_to_rebuild = True
                 for rm in self.rm_map.values():
                     rm.clear()
+                if len(self.rm_map) != 0:
+                    new_model.build_role_links(self.rm_map)
 
-                new_model.build_role_links(self.rm_map)
+                for crm in self.cond_rm_map.values():
+                    crm.clear()
+                if len(self.cond_rm_map) != 0:
+                    new_model.build_conditional_role_links(self.cond_rm_map)
 
             self.model = new_model
 

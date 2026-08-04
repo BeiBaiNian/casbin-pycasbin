@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import os
 import time
 from unittest import TestCase, IsolatedAsyncioTestCase
@@ -1041,3 +1042,64 @@ class TestConfigAsync(IsolatedAsyncioTestCase):
         self.assertTrue(e.enforce("alice", "data2", "read"))
         self.assertTrue(e.enforce("alice", "data3", "scribble"))
         self.assertFalse(e.enforce("alice", "data4", "scribble"))
+
+    async def test_load_policy_rebuilds_conditional_role_links(self):
+        e = self.get_enforcer(
+            get_examples("rbac_with_temporal_roles_model.conf"),
+            get_examples("rbac_with_temporal_roles_policy.csv"),
+        )
+        await e.load_policy()
+
+        ast = e.model.model["g"]["g"]
+        self.assertIsNotNone(ast.cond_rm)
+        self.assertIs(ast.cond_rm, e.cond_rm_map["g"])
+
+        e.add_named_link_condition_func("g", "alice", "data2_admin", util.time_match_func)
+        self.assertTrue(e.enforce("alice", "data1", "read"))
+        self.assertFalse(e.enforce("alice", "data2", "read"))
+
+
+class TestModelDeepCopy(TestCase):
+    """Assertion.__deepcopy__ must not clone the live role managers.
+
+    They are shared, cyclic object graphs; deep-copying them races with concurrent
+    add_link() calls and the copy would be thrown away by build_role_links() anyway.
+    """
+
+    def test_deepcopy_shares_role_managers(self):
+        e = casbin.Enforcer(
+            get_examples("rbac_model.conf"),
+            get_examples("rbac_policy.csv"),
+        )
+        ast = e.model.model["g"]["g"]
+
+        new_model = copy.deepcopy(e.model)
+        new_ast = new_model.model["g"]["g"]
+
+        self.assertIs(new_ast.rm, ast.rm)
+        self.assertIs(new_ast.cond_rm, ast.cond_rm)
+        # policy data is still copied, not shared
+        self.assertIsNot(new_ast.policy, ast.policy)
+        self.assertEqual(new_ast.policy, ast.policy)
+
+    def test_load_policy_keeps_role_manager(self):
+        e = casbin.Enforcer(
+            get_examples("rbac_model.conf"),
+            get_examples("rbac_policy.csv"),
+        )
+        e.load_policy()
+
+        self.assertIs(e.model.model["g"]["g"].rm, e.rm_map["g"])
+        self.assertTrue(e.enforce("alice", "data2", "read"))
+
+    def test_load_policy_without_auto_build_role_links(self):
+        e = casbin.Enforcer(
+            get_examples("rbac_model.conf"),
+            get_examples("rbac_policy.csv"),
+        )
+        e.enable_auto_build_role_links(False)
+        e.load_policy()
+
+        # the role manager must still be usable even though nothing rebuilt the links
+        self.assertIsNotNone(e.model.model["g"]["g"].rm)
+        self.assertTrue(e.enforce("alice", "data2", "read"))

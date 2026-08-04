@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import logging
 import copy
+import logging
+
 from casbin.model.policy_op import PolicyOp
 
 
@@ -111,15 +112,21 @@ class Assertion:
             self.cond_rm.set_domain_link_condition_func_params(rule[0], rule[1], domain, *rule[len(self.tokens) :])
 
     def __deepcopy__(self, memo):
-        """Custom deepcopy implementation that excludes rm and cond_rm attributes.
-        This stems from an issue with the watcher concurrent reloading causing an edge case of deepcopy error.
+        """Custom deepcopy implementation that copies policy data only,
+        sharing rm and cond_rm by reference instead of cloning them.
+
+        The role managers are live, shared, cyclic object graphs: deep-copying them
+        races with concurrent add_link() calls from another thread (as happens when a
+        watcher reloads the policy), and the copy is discarded by build_role_links()
+        anyway. This matches casbin-go, whose Assertion.copy() also carries RM and
+        CondRM over by reference.
         """
         cls = self.__class__
         result = cls.__new__(cls)
         memo[id(self)] = result
         for k, v in self.__dict__.items():
             if k in ("rm", "cond_rm"):
-                setattr(result, k, None)
+                setattr(result, k, v)
             else:
                 setattr(result, k, copy.deepcopy(v, memo))
         return result
