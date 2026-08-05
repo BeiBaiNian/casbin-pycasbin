@@ -1,8 +1,8 @@
 PyCasbin
 ====
 
-[![build](https://github.com/casbin/pycasbin/actions/workflows/build.yml/badge.svg)](https://github.com/casbin/pycasbin/actions/workflows/build.yml)
-[![Coverage Status](https://coveralls.io/repos/github/casbin/pycasbin/badge.svg)](https://coveralls.io/github/casbin/pycasbin)
+[![build](https://github.com/apache/casbin-pycasbin/actions/workflows/build.yml/badge.svg)](https://github.com/apache/casbin-pycasbin/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/github/apache/casbin-pycasbin/badge.svg)](https://coveralls.io/github/apache/casbin-pycasbin)
 [![Version](https://img.shields.io/pypi/v/pycasbin.svg)](https://pypi.org/project/pycasbin/)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/pycasbin.svg)](https://pypi.org/project/pycasbin/)
 [![Pyversions](https://img.shields.io/pypi/pyversions/pycasbin.svg)](https://pypi.org/project/pycasbin/)
@@ -24,9 +24,9 @@ Casbin is a powerful and efficient open-source access control library for Python
 | [Casbin](https://github.com/casbin/casbin)                                             | [jCasbin](https://github.com/casbin/jcasbin)                                        | [node-Casbin](https://github.com/casbin/node-casbin)                                        | [PHP-Casbin](https://github.com/php-casbin/php-casbin)                                   |
 | production-ready                                                                       | production-ready                                                                    | production-ready                                                                            | production-ready                                                                         |
 
-| [![python](https://casbin.org/img/langs/python.png)](https://github.com/casbin/pycasbin) | [![dotnet](https://casbin.org/img/langs/dotnet.png)](https://github.com/casbin-net/Casbin.NET) | [![c++](https://casbin.org/img/langs/cpp.png)](https://github.com/casbin/casbin-cpp) | [![rust](https://casbin.org/img/langs/rust.png)](https://github.com/casbin/casbin-rs) |
+| [![python](https://casbin.org/img/langs/python.png)](https://github.com/apache/casbin-pycasbin) | [![dotnet](https://casbin.org/img/langs/dotnet.png)](https://github.com/casbin-net/Casbin.NET) | [![c++](https://casbin.org/img/langs/cpp.png)](https://github.com/casbin/casbin-cpp) | [![rust](https://casbin.org/img/langs/rust.png)](https://github.com/casbin/casbin-rs) |
 |------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| [PyCasbin](https://github.com/casbin/pycasbin)                                           | [Casbin.NET](https://github.com/casbin-net/Casbin.NET)                                         | [Casbin-CPP](https://github.com/casbin/casbin-cpp)                                   | [Casbin-RS](https://github.com/casbin/casbin-rs)                                      |
+| [PyCasbin](https://github.com/apache/casbin-pycasbin)                                           | [Casbin.NET](https://github.com/casbin-net/Casbin.NET)                                         | [Casbin-CPP](https://github.com/casbin/casbin-cpp)                                   | [Casbin-RS](https://github.com/casbin/casbin-rs)                                      |
 | production-ready                                                                         | production-ready                                                                               | beta-test                                                                            | production-ready                                                                      |
 
 ## Table of contents
@@ -276,7 +276,7 @@ https://casbin.org/docs/benchmark
 
 ## Logging
 
-pycasbin leverages the default Python logging mechanism. The pycasbin package makes a call to `logging.getLogger()` to set the logger. No special logging configuration is needed other than initializing the logger in the parent application. If no logging is initialized within the parent application, you will not see any log messages from pycasbin. At the same time, When you enable log in pycasbin, you can specify the logging configuration through the parameter `logging_config`. If no configuration is specified, it will use the [default log configuration](https://github.com/casbin/pycasbin/blob/c33cabfa0ac65cd09cf812a65e71794d64cb5132/casbin/util/log.py#L6C1-L6C1). For other pycasbin extensions, you can refer to the [Django logging docs](https://docs.djangoproject.com/en/4.2/topics/logging/) if you are a Django user. For other Python users, you should refer to the [Python logging docs](https://docs.python.org/3/library/logging.config.html) to configure the logger.
+pycasbin leverages the default Python logging mechanism. The pycasbin package makes a call to `logging.getLogger()` to set the logger. No special logging configuration is needed other than initializing the logger in the parent application. If no logging is initialized within the parent application, you will not see any log messages from pycasbin. At the same time, When you enable log in pycasbin, you can specify the logging configuration through the parameter `logging_config`. If no configuration is specified, it will use the [default log configuration](https://github.com/apache/casbin-pycasbin/blob/c33cabfa0ac65cd09cf812a65e71794d64cb5132/casbin/util/log.py#L6C1-L6C1). For other pycasbin extensions, you can refer to the [Django logging docs](https://docs.djangoproject.com/en/4.2/topics/logging/) if you are a Django user. For other Python users, you should refer to the [Python logging docs](https://docs.python.org/3/library/logging.config.html) to configure the logger.
 
 ## Examples
 
@@ -305,11 +305,11 @@ https://casbin.org/docs/adopters
 ## Contributors
 
 This project exists thanks to all the people who contribute. 
-<a href="https://github.com/casbin/pycasbin/graphs/contributors"><img src="https://opencollective.com/pycasbin/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/apache/casbin-pycasbin/graphs/contributors"><img src="https://opencollective.com/pycasbin/contributors.svg?width=890&button=false" /></a>
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=casbin/pycasbin&type=Date)](https://star-history.com/#casbin/pycasbin&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=apache/casbin-pycasbin&type=Date)](https://star-history.com/#apache/casbin-pycasbin&Date)
 
 ## License
 
@@ -319,5 +319,5 @@ This project is licensed under the [Apache 2.0 license](LICENSE).
 
 If you have any issues or feature requests, please contact us. PR is welcomed.
 
-- https://github.com/casbin/pycasbin/issues
+- https://github.com/apache/casbin-pycasbin/issues
 - https://discord.gg/S5UjpzGZjN

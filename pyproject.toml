@@ -33,7 +33,7 @@ classifiers = [
 ]
 
 [project.urls]
-"Home-page" = "https://github.com/casbin/pycasbin"
+"Home-page" = "https://github.com/apache/casbin-pycasbin"
 
 [build-system]
 requires = ["setuptools"]
